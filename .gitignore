@@ -56,3 +56,9 @@ typings/
 
 # dotenv environment variables file
 .env
+
+# SQLite stuff
+data.db
+
+# Configuration
+conf/development.js

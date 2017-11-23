@@ -4,11 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./bin/start",
+    "watch": "nodemon ./bin/start",
+    "test": "NODE_ENV=test mocha spec/**/*.spec.js",
+    "test:watch": "NODE_ENV=test mocha --watch spec/**/*.spec.js"
   },
   "keywords": [],
   "author": "Simon Renoult <simon.renoult@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=8.9.0"
+  },
   "devDependencies": {
     "chai": "^4.1.2",
     "eslint": "^4.11.0",
@@ -19,8 +25,18 @@
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-promise": "^3.6.0",
     "eslint-plugin-standard": "^3.0.1",
+    "faker": "^4.1.0",
+    "got": "^8.0.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
-    "sinon": "^4.1.2"
+    "prettier": "^1.8.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "bunyan": "^1.8.12",
+    "express": "^4.16.2",
+    "joi": "^13.0.2",
+    "sequelize": "^4.22.11",
+    "sqlite3": "^3.1.13"
   }
 }
