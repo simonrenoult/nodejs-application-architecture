@@ -7,7 +7,8 @@
     "start": "node ./bin/start",
     "watch": "nodemon ./bin/start",
     "test": "NODE_ENV=test mocha spec/**/*.spec.js",
-    "test:watch": "NODE_ENV=test mocha --watch spec/**/*.spec.js"
+    "test:watch": "NODE_ENV=test mocha --watch spec/**/*.spec.js",
+    "lint": "eslint *.js"
   },
   "keywords": [],
   "author": "Simon Renoult <simon.renoult@gmail.com>",
