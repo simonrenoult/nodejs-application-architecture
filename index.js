@@ -52,6 +52,10 @@ const orderSchema = Joi.object().keys({
     .required()
 });
 
+const Bill = sequelize.define("bill", {
+  total_amount: Sequelize.INTEGER
+});
+
 module.exports = async () => {
   const app = express();
   await sequelize.sync({ force: true });
@@ -208,9 +212,24 @@ module.exports = async () => {
       return res.status(400).send();
     }
 
+    if (status === "paid") {
+      Bill.create({ total_amount: order.toJSON().total_amount });
+    }
+
     await order.update({ status });
 
     return res.status(200).send();
+  });
+
+  app.get("/bills", async (req, res) => {
+    let billList = await Bill.findAll();
+    res.status(200).send(billList);
+  });
+
+  app.delete("/bills", async (req, res) => {
+    const billList = await Bill.findAll();
+    billList.forEach(bill => bill.destroy());
+    res.status(204).send();
   });
 
   return app;

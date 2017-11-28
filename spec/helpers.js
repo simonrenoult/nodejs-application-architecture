@@ -62,6 +62,16 @@ async function deleteAllOrder() {
   return await queryApi("DELETE", "/orders");
 }
 
+async function deleteAllBill() {
+  return await queryApi("DELETE", "/bills");
+}
+
+async function addBill() {
+  const { headers } = await addOrder();
+  const url = headers.location + "/status";
+  await queryApi("PUT", url, { body: { status: "paid" } });
+}
+
 module.exports = {
   queryApi,
   testUtils: {
@@ -69,6 +79,8 @@ module.exports = {
     addProduct,
     deleteAllProduct,
     addOrder,
-    deleteAllOrder
+    deleteAllOrder,
+    deleteAllBill,
+    addBill
   }
 };
