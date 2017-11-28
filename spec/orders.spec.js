@@ -255,4 +255,89 @@ describe("Orders", () => {
       });
     });
   });
+
+  describe("PUT /orders/:id/status", () => {
+    describe("When order does not exist", () => {
+      it("returns 404", async () => {
+        const { statusCode } = await queryApi("PUT", "/orders/unknown/status", {
+          body: { status: "paid" }
+        });
+        expect(statusCode).to.equal(404);
+      });
+    });
+
+    describe("When status exists", () => {
+      describe("when new status is not pending, paid or cancelled", () => {
+        it("returns 400", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          const { statusCode } = await queryApi(
+            "PUT",
+            `/orders/${orderId}/status`,
+            { body: { status: "unknwown" } }
+          );
+          expect(statusCode).to.equal(400);
+        });
+      });
+
+      describe("when new status is pending", () => {
+        it("is returns 200", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          const { statusCode } = await queryApi(
+            "PUT",
+            `/orders/${orderId}/status`,
+            { body: { status: "pending" } }
+          );
+          expect(statusCode).to.equal(200);
+        });
+      });
+
+      describe("when new status is paid", () => {
+        it("is returns 200", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          const { statusCode } = await queryApi(
+            "PUT",
+            `/orders/${orderId}/status`,
+            { body: { status: "pending" } }
+          );
+          expect(statusCode).to.equal(200);
+        });
+
+        it("updates the order", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          await queryApi("PUT", `/orders/${orderId}/status`, {
+            body: { status: "paid" }
+          });
+          const { body } = await queryApi("GET", headers.location);
+          expect(body.status).to.equal("paid");
+        });
+      });
+
+      describe("when new status is cancelled", () => {
+        it("is returns 200", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          const { statusCode } = await queryApi(
+            "PUT",
+            `/orders/${orderId}/status`,
+            { body: { status: "pending" } }
+          );
+          expect(statusCode).to.equal(200);
+        });
+
+        it("updates the order", async () => {
+          const { headers } = await testUtils.addOrder();
+          const orderId = headers.location.slice("/orders/".length);
+          await queryApi("PUT", `/orders/${orderId}/status`, {
+            body: { status: "cancelled" }
+          });
+          const { body } = await queryApi("GET", headers.location);
+          expect(body.status).to.equal("cancelled");
+        });
+      });
+    });
+  });
 });

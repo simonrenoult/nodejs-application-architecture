@@ -192,5 +192,20 @@ module.exports = async () => {
     res.status(204).send();
   });
 
+  app.put("/orders/:id/status", async (req, res) => {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) return res.status(404).send();
+
+    const { status } = req.body;
+    if (!["pending", "paid", "cancelled"].includes(status)) {
+      return res.status(400).send();
+    }
+
+    await order.update({ status });
+
+    return res.status(200).send();
+  });
+
   return app;
 };
