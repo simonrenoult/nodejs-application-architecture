@@ -22,6 +22,25 @@ Shopping API with products, orders and bills.
   * Are automatically generated when an order status is set to paid
 
 
+# What's wrong?
+
+The file `index.js` owns each and every responsibility:
+  * server initialization
+  * route declaration
+  * HTTP deserialization
+  * business logic
+  * database bindings
+  * HTTP serialization
+  
+This has consequences:
+  * code cannot be tested at the unit level
+  * current tests can take a long time to run since they all hit the database
+  * no abstraction to help reasoning
+  * code repeats itself
+  * the code is made of side-effects
+  * code is not expressive
+    
+  
 ## License
 
 [MIT License](https://opensource.org/licenses/MIT)
