@@ -15,33 +15,56 @@ async function queryApi(method, resource, options) {
   return response;
 }
 
-exports.queryApi = queryApi;
-exports.testUtils = {
-  startApi() {
-    let server;
+function startApi() {
+  let server;
 
-    before(done => {
-      application().then(app => {
-        server = app.listen(PORT, done);
-      });
+  before(done => {
+    application().then(app => {
+      server = app.listen(PORT, done);
     });
+  });
 
-    after(() => {
-      server.close();
-    });
-  },
+  after(() => {
+    server.close();
+  });
+}
 
-  async addProduct(data) {
-    const defaultProduct = {
-      name: faker.commerce.product(),
-      price: faker.finance.amount(),
-      weight: faker.random.number()
-    };
-    const body = Object.assign(defaultProduct, data);
-    return await queryApi("POST", "/products", { body });
-  },
+async function addProduct(data) {
+  const defaultProduct = {
+    name: faker.commerce.product(),
+    price: faker.finance.amount(),
+    weight: faker.random.number()
+  };
+  const body = Object.assign(defaultProduct, data);
+  return await queryApi("POST", "/products", { body });
+}
 
-  async deleteAllProduct() {
-    return await queryApi("DELETE", "/products");
+async function deleteAllProduct() {
+  return await queryApi("DELETE", "/products");
+}
+
+async function addOrder(withProduct = true) {
+  const productList = [];
+  if (withProduct) {
+    const { headers } = await addProduct();
+    productList.push(headers.location.slice("/products/".length));
+  }
+  const defaultOrder = { product_list: productList };
+  const body = Object.assign(defaultOrder);
+  return await queryApi("POST", "/orders", { body });
+}
+
+async function deleteAllOrder() {
+  return await queryApi("DELETE", "/orders");
+}
+
+module.exports = {
+  queryApi,
+  testUtils: {
+    startApi,
+    addProduct,
+    deleteAllProduct,
+    addOrder,
+    deleteAllOrder
   }
 };

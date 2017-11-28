@@ -7,6 +7,7 @@ const Joi = require("joi");
 
 const env = process.env.NODE_ENV || "development";
 const conf = require(path.resolve(__dirname, "conf", env));
+const Op = Sequelize.Op;
 
 const logLevel = process.env.LOG_LEVEL || "info";
 const logger = bunyan.createLogger({ name: conf.appname, level: logLevel });
@@ -30,9 +31,30 @@ const productSchema = Joi.object().keys({
   weight: Joi.required()
 });
 
+const Order = sequelize.define("order", {
+  status: {
+    type: Sequelize.ENUM("pending", "canceled", "paid"),
+    defaultValue: "pending"
+  },
+  shipment_amount: {
+    type: Sequelize.INTEGER,
+    defaultValue: 25
+  },
+  total_amount: Sequelize.INTEGER,
+  total_weight: Sequelize.INTEGER
+});
+
+Order.hasMany(Product, { as: "ProductList" });
+
+const orderSchema = Joi.object().keys({
+  product_list: Joi.array()
+    .items(Joi.number())
+    .required()
+});
+
 module.exports = async () => {
   const app = express();
-  await sequelize.sync();
+  await sequelize.sync({ force: true });
 
   app.use(bodyParser.json());
 
@@ -89,6 +111,84 @@ module.exports = async () => {
   app.delete("/products", async (req, res) => {
     const productList = await Product.findAll();
     productList.forEach(product => product.destroy());
+    res.status(204).send();
+  });
+
+  app.post("/orders", async (req, res) => {
+    const { error } = Joi.validate(req.body, orderSchema, {
+      abortEarly: false
+    });
+
+    if (error) {
+      const errorMessage = error.details.map(({ message, context }) =>
+        Object.assign({ message, context })
+      );
+      return res.status(400).send({ data: errorMessage });
+    }
+
+    const productList = await Product.findAll({
+      where: {
+        id: { [Op.in]: req.body.product_list.map(id => parseInt(id, 0)) }
+      }
+    });
+
+    if (productList.length === 0) {
+      return res.status(400).send({
+        data: [
+          { message: "Unknown products", context: { key: "product_list" } }
+        ]
+      });
+    }
+
+    const productListData = productList.map(product => product.toJSON());
+
+    const orderTotalWeight = productListData
+      .map(p => p.weight)
+      .reduce((prev, cur) => prev + cur, 0);
+
+    const orderProductListPrice = productListData
+      .map(p => p.price)
+      .reduce((prev, cur) => prev + cur, 0);
+
+    const SHIPMENT_PRICE_STEP = 25;
+    const orderShipmentPrice =
+      SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / 10);
+
+    const orderData = Object.assign(
+      {
+        total_amount: orderProductListPrice + orderShipmentPrice,
+        shipment_amount: orderShipmentPrice,
+        total_weight: orderTotalWeight
+      },
+      { product_list: req.body.product_list }
+    );
+
+    const order = await Order.create(orderData);
+    res.set("Location", `/orders/${order.id}`);
+    res.status(201).send();
+  });
+
+  app.get("/orders", async (req, res) => {
+    let orderList = await Order.findAll();
+    const { sort } = req.query;
+    orderList = orderList.sort((a, b) => {
+      if (a[sort] < b[sort]) return -1;
+      if (a[sort] > b[sort]) return 1;
+      return 0;
+    });
+    res.status(200).send(orderList);
+  });
+
+  app.get("/orders/:id", async (req, res) => {
+    const { id } = req.params;
+    const order = await Order.findById(id);
+    if (!order) return res.status(404).send();
+    return res.status(200).send(order.toJSON());
+  });
+
+  app.delete("/orders", async (req, res) => {
+    const orderList = await Order.findAll();
+    orderList.forEach(order => order.destroy());
     res.status(204).send();
   });
 

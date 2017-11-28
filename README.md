@@ -10,7 +10,7 @@ Shopping API with products, orders and bills.
   * Have an identifier, a name, a price and a weight
   * Products can be sorted by name, price or weight
 * Orders
-  * Can be created and listed
+  * Can be created, listed, found by id and deleted
   * Have a status, a product list, a shipment amount, a total amount and a weight
   * Orders status can be pending, paid or canceled
   * Are offered 5% discount when the price exceeds 1000€
