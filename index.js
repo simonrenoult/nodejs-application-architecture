@@ -151,8 +151,9 @@ module.exports = async () => {
       .reduce((prev, cur) => prev + cur, 0);
 
     const SHIPMENT_PRICE_STEP = 25;
+    const SHIPMENT_WEIGHT_STEP = 10;
     const orderShipmentPrice =
-      SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / 10);
+      SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / SHIPMENT_WEIGHT_STEP);
 
     let totalAmount = orderProductListPrice + orderShipmentPrice;
     if (totalAmount > 1000) {

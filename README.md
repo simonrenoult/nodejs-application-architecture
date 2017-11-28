@@ -14,7 +14,7 @@ Shopping API with products, orders and bills.
   * Have a status, a product list, a shipment amount, a total amount and a weight
   * Orders status can be pending, paid or canceled
   * Are offered 5% discount when the price exceeds 1000€
-  * Shipment costs 25€ for every 50kg (50€ for 100kg, 75€ for 150kg, etc.)
+  * Shipment costs 25€ for every 10 morekg (50€ for 20kg, 75€ for 30kg, etc.)
 * Bills
   * Can be listed
   * Have an amount and a creation date
