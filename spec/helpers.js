@@ -43,11 +43,15 @@ async function deleteAllProduct() {
   return await queryApi("DELETE", "/products");
 }
 
-async function addOrder(withProduct = true) {
-  const productList = [];
+async function addOrder(withProduct = true, customProductList = []) {
+  let productList = [];
   if (withProduct) {
     const { headers } = await addProduct();
     productList.push(headers.location.slice("/products/".length));
+  } else {
+    if (customProductList && customProductList.length) {
+      productList = customProductList;
+    }
   }
   const defaultOrder = { product_list: productList };
   const body = Object.assign(defaultOrder);

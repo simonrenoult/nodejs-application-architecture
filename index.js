@@ -154,9 +154,14 @@ module.exports = async () => {
     const orderShipmentPrice =
       SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / 10);
 
+    let totalAmount = orderProductListPrice + orderShipmentPrice;
+    if (totalAmount > 1000) {
+      totalAmount = totalAmount * 0.95;
+    }
+
     const orderData = Object.assign(
       {
-        total_amount: orderProductListPrice + orderShipmentPrice,
+        total_amount: totalAmount,
         shipment_amount: orderShipmentPrice,
         total_weight: orderTotalWeight
       },

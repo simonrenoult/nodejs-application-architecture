@@ -141,6 +141,20 @@ describe("Orders", () => {
         });
 
         describe("total_amount", () => {
+          describe("When it exceeds 1000", () => {
+            it("is discounted by 5%", async () => {
+              const { headers } = await testUtils.addProduct({
+                price: 2000,
+                weight: 1
+              });
+              const productId = headers.location.slice("/products/".length);
+
+              const order = await testUtils.addOrder(false, [productId]);
+              const { body } = await queryApi("GET", order.headers.location);
+              expect(body.total_amount).to.equal(1900);
+            });
+          });
+
           it("is equal to the total amount of the product plus the shipment amount", async () => {
             const productList = await Promise.all([
               testUtils.addProduct({ price: 8, weight: 5 }),
