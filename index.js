@@ -33,7 +33,7 @@ const productSchema = Joi.object().keys({
 
 const Order = sequelize.define("order", {
   status: {
-    type: Sequelize.ENUM("pending", "canceled", "paid"),
+    type: Sequelize.ENUM("pending", "cancelled", "paid"),
     defaultValue: "pending"
   },
   shipment_amount: {
