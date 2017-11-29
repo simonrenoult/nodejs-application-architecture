@@ -49,7 +49,7 @@ These design flaws have consequences:
   * code is a big blob of side-effects: we hit all the technical layers within the single layer our application offers
   * code lacks expressiveness: we have to go through technical details in order to understand what some part of the code do
   * code cannot be tested at the unit level: we have no way to extract specific parts of our application. This leads to inappropriate test practices made of longer feedback loop (because tests will take more time to execute) and a blackbox approach (aka spaghetti code) since we can't drive our implementation with tests.
-  * current tests can take a long time to run since they all hit the network and database layers: if we consider that making a read operation on our database takes 50ms and a write operation takes 100ms, the test suite will take 22s to execute which is awfully long for a feedback loop. And that's just on our 200 lines application.
+  * current tests can take a long time to run since they all hit the network and database layers: if we consider that making a read operation on our database takes 50ms and a write operation takes 100ms, the test suite will take 22s (see a877fc) to execute which is awfully long for a feedback loop. And that's just on our 200 lines application.
   
 What solution do we have?
   * modules with a single purpose
