@@ -56,6 +56,10 @@ const Bill = sequelize.define("bill", {
   total_amount: Sequelize.INTEGER
 });
 
+function sleep(ms = 0) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
 module.exports = async () => {
   const app = express();
   await sequelize.sync({});
@@ -89,12 +93,14 @@ module.exports = async () => {
       return res.status(400).send({ data: errorMessage });
     }
 
+    await sleep(100);
     const product = await Product.create(req.body);
     res.set("Location", `/products/${product.id}`);
     res.status(201).send();
   });
 
   app.get("/products", async (req, res) => {
+    await sleep(50);
     let productList = await Product.findAll();
     const { sort } = req.query;
     productList = productList.sort((a, b) => {
@@ -107,12 +113,14 @@ module.exports = async () => {
 
   app.get("/products/:id", async (req, res) => {
     const { id } = req.params;
+    await sleep(50);
     const product = await Product.findById(id);
     if (!product) return res.status(404).send();
     return res.status(200).send(product.toJSON());
   });
 
   app.delete("/products", async (req, res) => {
+    await sleep(50);
     const productList = await Product.findAll();
     productList.forEach(product => product.destroy());
     res.status(204).send();
@@ -130,6 +138,7 @@ module.exports = async () => {
       return res.status(400).send({ data: errorMessage });
     }
 
+    await sleep(50);
     const productList = await Product.findAll({
       where: {
         id: { [Op.in]: req.body.product_list.map(id => parseInt(id, 0)) }
@@ -173,12 +182,14 @@ module.exports = async () => {
       { product_list: req.body.product_list }
     );
 
+    await sleep(100);
     const order = await Order.create(orderData);
     res.set("Location", `/orders/${order.id}`);
     res.status(201).send();
   });
 
   app.get("/orders", async (req, res) => {
+    await sleep(50);
     let orderList = await Order.findAll();
     const { sort } = req.query;
     orderList = orderList.sort((a, b) => {
@@ -191,12 +202,14 @@ module.exports = async () => {
 
   app.get("/orders/:id", async (req, res) => {
     const { id } = req.params;
+    await sleep(50);
     const order = await Order.findById(id);
     if (!order) return res.status(404).send();
     return res.status(200).send(order.toJSON());
   });
 
   app.delete("/orders", async (req, res) => {
+    await sleep(50);
     const orderList = await Order.findAll();
     orderList.forEach(order => order.destroy());
     res.status(204).send();
@@ -204,6 +217,7 @@ module.exports = async () => {
 
   app.put("/orders/:id/status", async (req, res) => {
     const { id } = req.params;
+    await sleep(50);
     const order = await Order.findById(id);
     if (!order) return res.status(404).send();
 
@@ -213,20 +227,24 @@ module.exports = async () => {
     }
 
     if (status === "paid") {
+      await sleep(100);
       Bill.create({ total_amount: order.toJSON().total_amount });
     }
 
+    await sleep(100);
     await order.update({ status });
 
     return res.status(200).send();
   });
 
   app.get("/bills", async (req, res) => {
+    await sleep(50);
     let billList = await Bill.findAll();
     res.status(200).send(billList);
   });
 
   app.delete("/bills", async (req, res) => {
+    await sleep(50);
     const billList = await Bill.findAll();
     billList.forEach(bill => bill.destroy());
     res.status(204).send();
