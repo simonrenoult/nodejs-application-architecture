@@ -21,24 +21,38 @@ Shopping API with products, orders and bills.
   * Have an amount and a creation date
   * Are automatically generated when an order status is set to paid
 
+Note: delete routes are there for testing purposes.
 
-# What's wrong?
+## What's wrong?
 
-The file `index.js` owns each and every responsibility:
+It mostly boils down to two design flaws:
+  * heavy coupling
+  * multiple responsibility
+
+The `index.js` file does everything:
   * server initialization
+  * database connection
+  * environment support
+  * logging
   * route declaration
   * HTTP deserialization
+  * configuration logic
   * business logic
   * database bindings
   * HTTP serialization
   
-This has consequences:
-  * code cannot be tested at the unit level
-  * current tests can take a long time to run since they all hit the database
-  * no abstraction to help reasoning
-  * code repeats itself
-  * the code is made of side-effects
-  * code is not expressive
+What's more, all the business and infrastructure logic depend on each other. For instance, in order to create an order (business use-case), we must extract information from the request body (infrastructure), then apply some format validation in order to work on consistent data (infrastructure), then calculate prices and discounts (business) and finally send the appropriate HTTP code (infrastructure).
+  
+These design flaws have consequences:
+  * no code reuse: codebase does not scale and is error-prone
+  * cognitive load is heavy: one has to keep lots of things in mind to comprehend how things work at the very top level of our application
+  * code is a big blob of side-effects: we hit all the technical layers within the single layer our application offers
+  * code lacks expressiveness: we have to go through technical details in order to understand what some part of the code do
+  * code cannot be tested at the unit level: we have no way to extract specific parts of our application. This leads to inappropriate test practices made of longer feedback loop (because tests will take more time to execute) and a blackbox approach (aka spaghetti code) since we can't drive our implementation with tests.
+  * current tests can take a long time to run since they all hit the network and database layers: if we consider that making a read operation on our database takes 50ms and a write operation takes 100ms
+  
+What solution do we have?
+  * modules with a single purpose
     
   
 ## License

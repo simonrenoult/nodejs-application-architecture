@@ -58,7 +58,7 @@ const Bill = sequelize.define("bill", {
 
 module.exports = async () => {
   const app = express();
-  await sequelize.sync({ force: true });
+  await sequelize.sync({});
 
   app.use(bodyParser.json());
 
