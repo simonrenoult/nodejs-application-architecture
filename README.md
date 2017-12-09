@@ -28,7 +28,7 @@ Note: delete routes are there for testing purposes.
 
 ### Start
 
-Server will listen on port `3000` by default (can be overriden with environment variable `PORT`)
+Server will listen on port `3000` by default (can be overridden with environment variable `PORT`)
 ```sh
 $ npm start
 ```
