@@ -1,7 +1,7 @@
 {
   "name": "nodejs-beyong-the-router",
   "version": "1.0.0",
-  "description": "",
+  "description": "A discussion on how Node.js projects can be organized.",
   "main": "index.js",
   "scripts": {
     "start": "node ./bin/start",
@@ -11,7 +11,10 @@
     "test:watch": "NODE_ENV=test mocha --watch spec/**/*.spec.js",
     "lint": "eslint *.js"
   },
-  "keywords": [],
+  "keywords": [
+    "craftsmanship",
+    "quality"
+  ],
   "author": "Simon Renoult <simon.renoult@gmail.com>",
   "license": "MIT",
   "engines": {

@@ -1,6 +1,6 @@
 # Node.js: beyond the route layer
 
-> A discussion about how Node.js projects can be organized.
+> A discussion on how Node.js projects can be organized.
 
 
 ## Features
