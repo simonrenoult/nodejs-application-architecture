@@ -160,8 +160,11 @@ module.exports = async () => {
       SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / SHIPMENT_WEIGHT_STEP);
 
     let totalAmount = orderProductListPrice + orderShipmentPrice;
-    if (totalAmount > 1000) {
-      totalAmount = totalAmount * 0.95;
+
+    const DISCOUNT_THRESHOLD = 1000;
+    const DISCOUNT_RATIO = 0.95;
+    if (totalAmount > DISCOUNT_THRESHOLD) {
+      totalAmount = totalAmount * DISCOUNT_RATIO;
     }
 
     const orderData = Object.assign(
