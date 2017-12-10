@@ -2,9 +2,14 @@
 
 > A discussion on how Node.js projects can be organized.
 
-[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-[![Build Status](https://travis-ci.org/simonrenoult/nodejs-application-architecture.svg?branch=master)](https://travis-ci.org/simonrenoult/nodejs-application-architecture)
+<a href="https://travis-ci.org/prettier/prettier">
+  <img alt="Travis" src="https://img.shields.io/travis/simonrenoult/nodejs-application-architecture.svg?style=flat-square">
+</a>
+<a href="https://travis-ci.org/prettier/prettier">
+  <img alt="Travis" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
+</a>
+
 
 ## Features
 
