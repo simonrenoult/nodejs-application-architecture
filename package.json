@@ -6,10 +6,11 @@
   "scripts": {
     "start": "node ./bin/start",
     "watch": "nodemon ./bin/start",
+    "lint": "eslint *.js",
     "pretest": "NODE_ENV=test npm run lint",
-    "test": "NODE_ENV=test mocha spec/**/*.spec.js --timeout 5000",
-    "test:watch": "NODE_ENV=test npm run test -- --watch",
-    "lint": "eslint *.js"
+    "test": "NODE_ENV=test nyc mocha spec/**/*.spec.js --timeout 5000",
+    "test:watch": "npm test -- --watch",
+    "coverage": "NODE_ENV=test nyc report --reporter=text-lcov > coverage.lcov && codecov"
   },
   "keywords": [
     "craftsmanship",
@@ -22,6 +23,7 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "codecov": "^3.0.0",
     "eslint": "^4.11.0",
     "eslint-config-prettier": "^2.8.0",
     "eslint-plugin-import": "^2.8.0",
@@ -32,6 +34,7 @@
     "got": "^8.0.0",
     "mocha": "^4.0.1",
     "nodemon": "^1.12.1",
+    "nyc": "^11.3.0",
     "prettier": "^1.8.2"
   },
   "dependencies": {

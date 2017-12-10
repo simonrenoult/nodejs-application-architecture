@@ -3,10 +3,13 @@
 > A discussion on how Node.js projects can be organized.
 
 
-<a href="https://travis-ci.org/prettier/prettier">
+<a href="https://travis-ci.org/simonrenoult/nodejs-application-architecture">
   <img alt="Travis" src="https://img.shields.io/travis/simonrenoult/nodejs-application-architecture.svg?style=flat-square">
 </a>
-<a href="https://travis-ci.org/prettier/prettier">
+<a href="https://codecov.io/gh/simonrenoult/nodejs-application-architecture">
+  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/simonrenoult/nodejs-application-architecture.svg?style=flat-square">
+</a>
+<a href="https://travis-ci.org/simonrenoult/nodejs-application-architecture">
   <img alt="Travis" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
 </a>
 
