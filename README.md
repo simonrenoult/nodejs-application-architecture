@@ -4,7 +4,7 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-[![Build Status](https://travis-ci.org/simonrenoult/a-well-designed-node-api.svg?branch=master)](https://travis-ci.org/simonrenoult/a-well-designed-node-api)
+[![Build Status](https://travis-ci.org/simonrenoult/nodejs-application-architecture.svg?branch=master)](https://travis-ci.org/simonrenoult/nodejs-application-architecture)
 
 ## Features
 
