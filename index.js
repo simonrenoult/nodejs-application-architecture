@@ -12,12 +12,17 @@ const Op = Sequelize.Op;
 const logLevel = process.env.LOG_LEVEL || "info";
 const logger = bunyan.createLogger({ name: conf.appname, level: logLevel });
 
-const sequelize = new Sequelize(
-  conf.db.database,
-  conf.db.username,
-  conf.db.password,
-  conf.db.sequelize
-);
+let sequelize = undefined;
+if (env === "production") {
+  sequelize = new Sequelize(conf.db.uri);
+} else {
+  sequelize = new Sequelize(
+    conf.db.database,
+    conf.db.username,
+    conf.db.password,
+    conf.db.sequelize
+  );
+}
 
 const Product = sequelize.define("product", {
   name: Sequelize.STRING,

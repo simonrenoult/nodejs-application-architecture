@@ -118,6 +118,14 @@ describe("Products", () => {
         expect(statusCode).to.equal(201);
       });
 
+      it("returns the product location", async () => {
+        const data = { name: "tshirt", price: 20, weight: 0.1 };
+        const { headers } = await queryApi("POST", "/products", {
+          body: data
+        });
+        expect(headers.location).to.match(/products\/.+/);
+      });
+
       it("adds a new product", async () => {
         const data = { name: "tshirt", price: 20, weight: 0.1 };
         await queryApi("POST", "/products", { body: data });
