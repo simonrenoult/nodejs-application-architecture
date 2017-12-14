@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const bunyan = require("bunyan");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const Sequelize = require("sequelize");
 const Joi = require("joi");
@@ -76,6 +77,8 @@ module.exports = async () => {
     });
     next();
   });
+
+  app.use(cors());
 
   app.use((req, res, next) => {
     res.set("Content-Type", "application/json");

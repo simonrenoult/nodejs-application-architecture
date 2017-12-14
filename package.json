@@ -40,6 +40,7 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "bunyan": "^1.8.12",
+    "cors": "^2.8.4",
     "express": "^4.16.2",
     "joi": "^13.0.2",
     "pg": "^6.4.2",
