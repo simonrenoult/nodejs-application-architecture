@@ -13,6 +13,7 @@ const Op = Sequelize.Op;
 const logLevel = process.env.LOG_LEVEL || "info";
 const logger = bunyan.createLogger({ name: conf.appname, level: logLevel });
 
+// Application configuration
 let sequelize = undefined;
 if (env === "production") {
   sequelize = new Sequelize(conf.db.uri);
@@ -25,6 +26,7 @@ if (env === "production") {
   );
 }
 
+// Schemas and models
 const Product = sequelize.define("product", {
   name: Sequelize.STRING,
   price: Sequelize.INTEGER,
@@ -62,12 +64,14 @@ const Bill = sequelize.define("bill", {
   total_amount: Sequelize.INTEGER
 });
 
+// Application router
 module.exports = async () => {
   const app = express();
   await sequelize.sync({});
 
   app.use(bodyParser.json());
 
+  // Log each request entering our API
   app.use((req, res, next) => {
     logger.debug({
       method: req.method,
@@ -85,6 +89,7 @@ module.exports = async () => {
     next();
   });
 
+  // API route to create a product
   app.post("/products", async (req, res) => {
     const { error } = Joi.validate(req.body, productSchema, {
       abortEarly: false
@@ -102,6 +107,7 @@ module.exports = async () => {
     res.status(201).send();
   });
 
+  // API route to retrieve a list of product
   app.get("/products", async (req, res) => {
     let productList = await Product.findAll();
     const { sort } = req.query;
@@ -113,6 +119,7 @@ module.exports = async () => {
     res.status(200).send(productList);
   });
 
+  // API route to retrieve a single product
   app.get("/products/:id", async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -120,12 +127,14 @@ module.exports = async () => {
     return res.status(200).send(product.toJSON());
   });
 
+  // API route to remove all products
   app.delete("/products", async (req, res) => {
     const productList = await Product.findAll();
     productList.forEach(product => product.destroy());
     res.status(204).send();
   });
 
+  // API route to create an order
   app.post("/orders", async (req, res) => {
     const { error } = Joi.validate(req.body, orderSchema, {
       abortEarly: false
@@ -189,6 +198,7 @@ module.exports = async () => {
     res.status(201).send();
   });
 
+  // API route to retrieve a list of order
   app.get("/orders", async (req, res) => {
     let orderList = await Order.findAll();
     const { sort } = req.query;
@@ -200,6 +210,7 @@ module.exports = async () => {
     res.status(200).send(orderList);
   });
 
+  // API route to retrieve a single order
   app.get("/orders/:id", async (req, res) => {
     const { id } = req.params;
     const order = await Order.findById(id);
@@ -207,12 +218,14 @@ module.exports = async () => {
     return res.status(200).send(order.toJSON());
   });
 
+  // API route to remove all orders
   app.delete("/orders", async (req, res) => {
     const orderList = await Order.findAll();
     orderList.forEach(order => order.destroy());
     res.status(204).send();
   });
 
+  // API route to update an order status
   app.put("/orders/:id/status", async (req, res) => {
     const { id } = req.params;
     const order = await Order.findById(id);
@@ -232,11 +245,13 @@ module.exports = async () => {
     return res.status(200).send();
   });
 
+  // API route to retrieve all the bills
   app.get("/bills", async (req, res) => {
     let billList = await Bill.findAll();
     res.status(200).send(billList);
   });
 
+  // API route to remove all the bills
   app.delete("/bills", async (req, res) => {
     const billList = await Bill.findAll();
     billList.forEach(bill => bill.destroy());
