@@ -91,11 +91,14 @@ module.exports = async () => {
 
   // API route to create a product
   app.post("/products", async (req, res) => {
+    // HTTP request payload validation
+    // abortEarly is false in order to retrieve all the errors at once
     const { error } = Joi.validate(req.body, productSchema, {
       abortEarly: false
     });
 
     if (error) {
+      // Create the HTTP response error list
       const errorMessage = error.details.map(({ message, context }) =>
         Object.assign({ message, context })
       );
@@ -136,6 +139,8 @@ module.exports = async () => {
 
   // API route to create an order
   app.post("/orders", async (req, res) => {
+    // HTTP request payload validation
+    // abortEarly is false in order to retrieve all the errors at once
     const { error } = Joi.validate(req.body, orderSchema, {
       abortEarly: false
     });
@@ -147,6 +152,7 @@ module.exports = async () => {
       return res.status(400).send({ data: errorMessage });
     }
 
+    // Fetch the list of products based on the products provided in the order
     const productList = await Product.findAll({
       where: {
         id: { [Op.in]: req.body.product_list.map(id => parseInt(id, 0)) }
@@ -163,21 +169,26 @@ module.exports = async () => {
 
     const productListData = productList.map(product => product.toJSON());
 
+    // Compute the total weight order
     const orderTotalWeight = productListData
       .map(p => p.weight)
       .reduce((prev, cur) => prev + cur, 0);
 
+    // Compute the total price amount
     const orderProductListPrice = productListData
       .map(p => p.price)
       .reduce((prev, cur) => prev + cur, 0);
 
+    // Compute the shipment price amount
     const SHIPMENT_PRICE_STEP = 25;
     const SHIPMENT_WEIGHT_STEP = 10;
     const orderShipmentPrice =
       SHIPMENT_PRICE_STEP * Math.round(orderTotalWeight / SHIPMENT_WEIGHT_STEP);
 
+    // Compute the order price
     let totalAmount = orderProductListPrice + orderShipmentPrice;
 
+    // Compute the discount
     const DISCOUNT_THRESHOLD = 1000;
     const DISCOUNT_RATIO = 0.95;
     if (totalAmount > DISCOUNT_THRESHOLD) {
