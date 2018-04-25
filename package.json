@@ -24,28 +24,28 @@
   "devDependencies": {
     "chai": "^4.1.2",
     "codecov": "^3.0.0",
-    "eslint": "^4.11.0",
+    "eslint": "^4.19.1",
     "eslint-config-prettier": "^2.8.0",
-    "eslint-plugin-import": "^2.8.0",
-    "eslint-plugin-node": "^5.2.1",
-    "eslint-plugin-prettier": "^2.3.1",
-    "eslint-plugin-promise": "^3.6.0",
+    "eslint-plugin-import": "^2.11.0",
+    "eslint-plugin-node": "^6.0.1",
+    "eslint-plugin-prettier": "^2.6.0",
+    "eslint-plugin-promise": "^3.7.0",
     "faker": "^4.1.0",
-    "got": "^8.0.0",
-    "mocha": "^4.0.1",
-    "nodemon": "^1.12.1",
-    "nyc": "^11.3.0",
-    "prettier": "^1.8.2"
+    "got": "^8.3.0",
+    "mocha": "^5.1.1",
+    "nodemon": "^1.17.3",
+    "nyc": "^11.7.1",
+    "prettier": "^1.12.1"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
     "bunyan": "^1.8.12",
     "cors": "^2.8.4",
-    "express": "^4.16.2",
-    "joi": "^13.0.2",
-    "pg": "^6.4.2",
+    "express": "^4.16.3",
+    "joi": "^13.2.0",
+    "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
-    "sequelize": "^4.22.11",
-    "sqlite3": "^3.1.13"
+    "sequelize": "^4.37.6",
+    "sqlite3": "^4.0.0"
   }
 }
