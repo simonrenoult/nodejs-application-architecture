@@ -13,6 +13,10 @@
   <img alt="Travis" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square">
 </a>
 
+## Discussion
+
+The artcle discussing this code base is here: https://blog.octo.com/en/clean-node-part-1/. Feel free to open an issue in order to discuss design decisions!
+
 
 ## Features
 
