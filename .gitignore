@@ -65,3 +65,7 @@ conf/development.js
 
 # Code coverage
 *.lcov
+
+# ide
+.vscode/
+.idea/
