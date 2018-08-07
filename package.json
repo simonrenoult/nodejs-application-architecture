@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/start",
     "watch": "nodemon ./bin/start",
-    "lint": "eslint *.js",
+    "lint": "eslint .",
     "pretest": "NODE_ENV=test npm run lint",
     "test": "NODE_ENV=test nyc mocha spec/**/*.spec.js --timeout 5000",
     "test:watch": "npm test -- --watch",
