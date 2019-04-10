@@ -125,7 +125,7 @@ module.exports = async () => {
   // API route to retrieve a single product
   app.get("/products/:id", async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
+    const product = await Product.findByPk(id);
     if (!product) return res.status(404).send();
     return res.status(200).send(product.toJSON());
   });
@@ -224,7 +224,7 @@ module.exports = async () => {
   // API route to retrieve a single order
   app.get("/orders/:id", async (req, res) => {
     const { id } = req.params;
-    const order = await Order.findById(id);
+    const order = await Order.findByPk(id);
     if (!order) return res.status(404).send();
     return res.status(200).send(order.toJSON());
   });
@@ -239,7 +239,7 @@ module.exports = async () => {
   // API route to update an order status
   app.put("/orders/:id/status", async (req, res) => {
     const { id } = req.params;
-    const order = await Order.findById(id);
+    const order = await Order.findByPk(id);
     if (!order) return res.status(404).send();
 
     const { status } = req.body;
