@@ -60,9 +60,6 @@ typings/
 # SQLite stuff
 data.db
 
-# Configuration
-conf/development.js
-
 # Code coverage
 *.lcov
 

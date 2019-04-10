@@ -5,7 +5,7 @@ module.exports = {
   db: {
     username: "nodejs_beyond",
     password: "nodejs_beyond",
-    database: "nodejs_beyond_test",
+    database: "nodejs_beyond",
     sequelize: {
       dialect: "sqlite",
       logging: false,
