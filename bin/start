@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-const http = require("http");
+const { createServer } = require("http");
 const api = require("../index.js");
 const PORT = parseInt(process.env.PORT, 10) || 3000;
 
 api().then(app => {
-  const server = http.createServer(app);
+  const server = createServer(app);
   server.listen(PORT, () => {
     console.log("Server listening on port %s", PORT);
   });
