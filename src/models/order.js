@@ -1,12 +1,6 @@
 const Sequelize = require("sequelize");
 
-function models(database) {
-  const product = database.define("product", {
-    name: Sequelize.STRING,
-    price: Sequelize.INTEGER,
-    weight: Sequelize.INTEGER
-  });
-
+function order(database) {
   const order = database.define("order", {
     status: {
       type: Sequelize.ENUM("pending", "cancelled", "paid"),
@@ -20,13 +14,11 @@ function models(database) {
     total_weight: Sequelize.INTEGER
   });
 
-  order.hasMany(product, { as: "ProductList" });
+  order.associate = product => {
+    order.hasMany(product, { as: "ProductList" });
+  };
 
-  const bill = database.define("bill", {
-    total_amount: Sequelize.INTEGER
-  });
-
-  return { bill, product, order };
+  return order;
 }
 
-module.exports = models;
+module.exports = order;

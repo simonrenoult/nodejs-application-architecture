@@ -9,7 +9,7 @@ function server(middlewares, router) {
   app.use(middlewares.logRequest());
   app.use(cors());
 
-  router.route(app);
+  router.dispatch(app);
 
   return app;
 }

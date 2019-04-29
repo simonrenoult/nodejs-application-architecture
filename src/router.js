@@ -1,7 +1,7 @@
 function router(services) {
-  return { route };
+  return { dispatch };
 
-  function route(app) {
+  function dispatch(app) {
     app.post("/products", services.product.create);
     app.get("/products", services.product.list);
     app.get("/products/:id", services.product.show);
