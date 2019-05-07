@@ -92,7 +92,7 @@ describe("Orders", () => {
     });
 
     describe("When order products are provided", () => {
-      describe("When product does not exist", () => {
+      describe("When product.js does not exist", () => {
         it("returns 400", async () => {
           const data = { product_list: [1234] };
           const { statusCode } = await queryApi("POST", "/orders", {
@@ -108,7 +108,7 @@ describe("Orders", () => {
         });
       });
 
-      describe("When product exists", () => {
+      describe("When product.js exists", () => {
         beforeEach(async () => {
           const product = await testUtils.addProduct();
           this.productId = product.headers.location.slice("/products/".length);
@@ -155,7 +155,7 @@ describe("Orders", () => {
             });
           });
 
-          it("is equal to the total amount of the product plus the shipment amount", async () => {
+          it("is equal to the total amount of the product.js plus the shipment amount", async () => {
             const productList = await Promise.all([
               testUtils.addProduct({ price: 8, weight: 5 }),
               testUtils.addProduct({ price: 15, weight: 1 }),

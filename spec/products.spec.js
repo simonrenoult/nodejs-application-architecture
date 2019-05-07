@@ -6,7 +6,7 @@ describe("Products", () => {
   beforeEach(async () => await testUtils.deleteAllProduct());
 
   describe("GET /products", () => {
-    describe("When there is no product", () => {
+    describe("When there is no product.js", () => {
       it("returns 200", async () => {
         const { statusCode } = await queryApi("GET", "/products");
         expect(statusCode).to.equal(200);
@@ -18,7 +18,7 @@ describe("Products", () => {
       });
     });
 
-    describe("When there is a single product", () => {
+    describe("When there is a single product.js", () => {
       beforeEach(async () => await testUtils.addProduct());
 
       it("returns 200", async () => {
@@ -66,14 +66,14 @@ describe("Products", () => {
   });
 
   describe("GET /products/:id", () => {
-    describe("When product does not exist", () => {
+    describe("When product.js does not exist", () => {
       it("returns 404", async () => {
         const { statusCode } = await queryApi("GET", "/products/unknown");
         expect(statusCode).to.equal(404);
       });
     });
 
-    describe("When the product exists", () => {
+    describe("When the product.js exists", () => {
       beforeEach(async () => {
         const { headers } = await testUtils.addProduct();
         this.location = headers.location;
@@ -84,7 +84,7 @@ describe("Products", () => {
         expect(statusCode).to.equal(200);
       });
 
-      it("returns the product", async () => {
+      it("returns the product.js", async () => {
         const { body } = await queryApi("GET", this.location);
         expect(body.name).to.exist;
         expect(body.weight).to.exist;
@@ -94,7 +94,7 @@ describe("Products", () => {
   });
 
   describe("POST /products", () => {
-    describe("When product data is missing", () => {
+    describe("When product.js data is missing", () => {
       it("returns 400", async () => {
         const { statusCode } = await queryApi("POST", "/products", {
           body: {}
@@ -109,7 +109,7 @@ describe("Products", () => {
       });
     });
 
-    describe("When product data is valid", () => {
+    describe("When product.js data is valid", () => {
       it("returns 201", async () => {
         const data = { name: "tshirt", price: 20, weight: 0.1 };
         const { statusCode } = await queryApi("POST", "/products", {
@@ -118,7 +118,7 @@ describe("Products", () => {
         expect(statusCode).to.equal(201);
       });
 
-      it("returns the product location", async () => {
+      it("returns the product.js location", async () => {
         const data = { name: "tshirt", price: 20, weight: 0.1 };
         const { headers } = await queryApi("POST", "/products", {
           body: data
@@ -126,7 +126,7 @@ describe("Products", () => {
         expect(headers.location).to.match(/products\/.+/);
       });
 
-      it("adds a new product", async () => {
+      it("adds a new product.js", async () => {
         const data = { name: "tshirt", price: 20, weight: 0.1 };
         await queryApi("POST", "/products", { body: data });
         const { body } = await queryApi("GET", "/products");
@@ -145,7 +145,7 @@ describe("Products", () => {
   });
 
   describe("DELETE /products", () => {
-    describe("When there is no product", () => {
+    describe("When there is no product.js", () => {
       it("returns 204", async () => {
         const { statusCode } = await queryApi("DELETE", "/products");
         expect(statusCode).to.equal(204);

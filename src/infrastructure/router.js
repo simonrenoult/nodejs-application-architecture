@@ -1,8 +1,15 @@
-function router(services) {
+function router(usecases) {
   return { dispatch };
 
   function dispatch(app) {
-    app.post("/products", services.product.create);
+    app.post("/products", (req, res) => {
+      const { name, price, weight } = req.body;
+      const product = usecases.createProduct(name, price, weight);
+
+      res.set("Location", `/products/${product.id}`);
+      res.status(201).send();
+    });
+
     app.get("/products", services.product.list);
     app.get("/products/:id", services.product.show);
     app.delete("/products", services.product.deleteAll);
